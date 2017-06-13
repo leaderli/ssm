@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>layui</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="css/layui.css" media="all">
+	<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div id="d1">
+	<div class="layui-form">
+<table class="layui-table">
+<colgroup>
+<col width="50">
+<col width="150">
+<col width="150">
+<col width="200">
+<col>
+</colgroup>
+<thead>
+<tr>
+<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+<th>人物</th>
+<th>民族</th>
+<th>出场时间</th>
+<th>格言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><input type="checkbox" name="" lay-skin="primary"></td>
+<td>贤心</td>
+<td>汉族</td>
+<td>1989-10-14</td>
+<td>人生似修行</td>
+</tr>
+<tr v-for="u in user">
+<td><input type="checkbox" name="" lay-skin="primary"></td>
+<td><input type="checkbox" name="" lay-skin="primary"></td>
+	<td>{{u.id}}</td>
+	<td>{{u.username}}</td>
+	<td>{{u.password}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+	</div>
+	<div id="bu">
+		<button v-on:click="greet">点击</button>
+	</div>
+<script src="layui.js" charset="utf-8"></script>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script src="js/vue.min.js"></script>
+<script src="js/vue-resource.js"></script>
+<script>
+Vue.component('simple-grid', {
+    template: '#grid-template',
+    props: ['dataList,columns'],
+});
+new Vue({
+    el: '#d1',
+    data: {
+        user: [],
+        col: ['id', 'username', 'password']
+    },
+    mounted: function () {
+        this.$http.get('/hello/list').then(function (data) {
+            console.log(data.data)
+            this.user = data.data;
+        }, function () {
+            console.log('404')
+        });
+    },
+});
+new Vue({
+	el:'#bu',
+	methods:{
+	    greet:function () {
+            this.$http.post('/hello/login', {id: 15,username:'ajax',password:'ajax'})
+        }
+	}
+})
+</script>
+</body>
+</html>
